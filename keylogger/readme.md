@@ -9,7 +9,8 @@ Using C++ winapi to record keystrokes from keyboard entered by the users.
 #include <iostream>
 #include <string>      
 #include <fstream>    //filestream
-#include <stdio.h>    
+#include <stdio.h>
+#include <ctime>    
 ```
 
 #### Methods and Terminology

